@@ -33,11 +33,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isToggled = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Drift Demo'),
+        actions: [
+          Switch(
+            value: isToggled,
+            onChanged: (value) {
+              setState(() {
+                isToggled = !isToggled;
+              });
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -48,7 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 final db = ref.read(dbProvider);
                 return Expanded(
                   child: StreamBuilder<List<Task>>(
-                    stream: db.watchAllTasks(),
+                    stream: isToggled
+                        ? db.watchCompletedTasks() //db.watchCompletedTasksCustom()  or  completedTasksGenerated()
+                        : db.watchAllTasks(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(

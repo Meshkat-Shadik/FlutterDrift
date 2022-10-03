@@ -45,7 +45,7 @@ class Task extends DataClass implements Insertable<Task> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       date: serializer.fromJson<DateTime?>(json['date']),
-      completed: serializer.fromJson<bool>(json['completed']),
+      completed: serializer.fromJson<int>(json['completed']) == 1,
     );
   }
   @override
